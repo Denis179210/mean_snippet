@@ -1,0 +1,22 @@
+<div
+    class="modal fade"
+    id="notif-delete">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            
+            <div class="modal-header border-0 pb-0">
+                <div class=" w-100">
+                    <h3 class="border-bottom text-center pb-3 mb-0">Are you sure you want to delete these <strong> {{contacts.actionGroup.length}} </strong>contacts ?</h3>
+                </div>
+            </div>
+            <!-- <div class="modal-body px-3 font-weight-light text-center border border-danger">
+               
+
+            </div> -->
+            <div class="d-flex justify-content-center my-4 pt-3 pb-4">
+                <button class="px-4 btn btn-sm btn-danger font-weight-bold" data-dismiss="modal" ng-click="contacts.deleteActionGroup()" >DELETE</button>
+                <button class="px-3 btn btn-sm btn-link text-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

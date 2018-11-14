@@ -1,0 +1,64 @@
+<div class="container" >
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <h3 class="border-bottom pb-2">Notes</h3>
+        </div>
+    </div>
+    <div class="row justify-content-left my-4" ng-class="{'empty-date': details.emptyNewDate}">
+        <label for="" class="col-sm-2 mt-2">Date:</label>
+        <div class="col-sm-3" >
+            
+            <input type="text"
+                    id="datepickerForNew"
+                    class="form-control"
+                    ng-keyup="details.ngModel($event)"
+                    ng-focus="details.emptyNewDate = false"
+                    >
+        </div>
+        
+    </div>
+    <div class="row justify-content-left my-4">
+        <label for="" class="col-sm-2 mt-2">Add Note:</label>
+        <div class="col-sm-10" ng-class="{'empty-note': details.emptyNewNote}">
+
+                <textarea class="form-control"
+                            rows="5"
+                            ng-model="details.newNote.description"
+                            ng-focus="details.emptyNewNote = false"
+                            ng-blur="details.clearNoteArea($event)"></textarea>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+
+        <div class="col-sm-12">
+            
+            <div class="d-flex justify-content-end my-4">
+                <button class="btn btn-success" ng-click="details.saveNote()">SAVE NOTE</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4" ng-if="details.notes.length > 0">
+        <div class="col-12">
+            <div ng-include="'edit-note.html'"></div>
+            <div ng-include="'notif-delete-note.html'"></div>
+            <div class="container-fluid border">
+                <div class="row border-bottom" ng-class-odd="'bg-light'" ng-repeat="note in details.notes">
+                    <div class="col-12 col-sm-2 pr-0 py-3 font-weight-bold d-none d-md-block">{{note.date | date : 'MMMM dd, yyyy' : 'UTC'}}</div>
+                    <div class="col-12 col-sm-2 pr-0 py-3 font-weight-bold d-none d-sm-block d-md-none">{{note.date | date : 'MMM dd, yyyy' : 'UTC'}}</div>
+                    <div class="col-12 col-sm-2 pr-0 font-weight-bold h3 mt-5  mb-0 d-sm-none">{{note.date | date : 'MMM dd, yyyy' : 'UTC'}}</div>
+                    <div class="col-12 col-sm-7 col-md-8 py-3 ">{{note.description}}</div>
+                    <div class="col-12 col-sm py-3 px-0 h-100">
+                        <div class="d-flex justify-content-center flex-nowrap">
+                            
+                            <button class="btn btn-sm btn-link text-dark text-decor-0 border-0 p-0" data-toggle="modal" data-target="#editNote" ng-click="details.getNoteById(note._id)">Edit</button>
+                            <span class="px-2">|</span>
+                            <button class="btn btn-sm btn-link text-danger text-decor-0 border-0 p-0" data-toggle="modal" data-target="#notifDeleteNote" ng-click="details.getNoteById(note._id)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>

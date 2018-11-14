@@ -1,0 +1,105 @@
+<div>
+    <div class="modal fade" id="{{sms._id}}">
+        <div class="modal-dialog fullscreen modal-dialog-centered">
+            <div class="modal-content pr-0">
+                <div class="modal-header bg-light border-bottom-0 pb-0">
+                    <div class="w-100 text-right">
+                        <span class="px-3 text-secondary pointer" data-dismiss="modal">X</span>
+                    </div>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-start align-items-center px-4 pb-4 pt-1 h-100 bg-light ">
+                    <div class="container my-2">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="h4 text-uppercase text-center">
+                                    detailed description of the sent message
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border w-100 container">
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Message ID:</div>
+                            <div class="col-sm-9 py-2 border bg-white text-truncate "><span>{{sms.messageDetails.sid || '&ndash;'}}</span> </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Send time:</div>
+                            <div class="col-sm-9 py-2 border bg-white"><span class="d-inline-block custom-rounded bg-darky text-secondary m-2 px-2 py-0">{{sms.dateCreated | date : 'dd MMM yyyy hh:mm a'}}</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">From:</div>
+                            <div class="col-sm-9 py-2 border bg-white">{{sms.from}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">To:</div>
+                            <div class="col-sm-9 py-2 border bg-white">
+                                <span class="d-inline-block bg-info-lighter text-info-darker custom-rounded py-0 px-2 m-2">
+                                    {{sms.contact.name.firstName}} {{sms.contact.name.lastName}} ({{sms.messageDetails.to}})
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Message content:</div>
+                            <div class="col-sm-9 py-2 border bg-white" ng-class="{ 'contact-list__xs': sms.description.length > 700 }">
+                                <div>
+
+                                    {{sms.messageDetails.body}}
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Note:</div>
+                            <div class="col-sm-9 py-2 border bg-white" ng-class="{ 'contact-list__xs': sms.description.length > 700 }">
+                                <div>
+                                    {{sms.note || '&ndash;'}}
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-truncate text-secondary">Source:</div>
+                            <div class="col-sm-9 py-2 border bg-white">
+                                <p class="text-truncate m-0" ng-if="sms.messageDetails.uri">
+
+                                    https://api.twilio.com{{sms.messageDetails.uri}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Total characters:</div>
+                            <div class="col-sm-9 py-2 border bg-white">{{sms.messageDetails.body.length}} characters</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Message parts:</div>
+                            <div class="col-sm-9 py-2 border bg-white">{{sms.messageDetails.numSegments || sms.failed.numSegments}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Encoding:</div>
+                            <div class="col-sm-9 py-2 border bg-white">{{}}<span ng-if="true">GSM</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Status:</div>
+                            <div class="col-sm-9 py-2 border bg-white">
+                                <div class="text-truncate">
+                                    <div class="d-inline-block custom-rounded px-2 text-white text-uppercase text-center font-weight-bold" 
+                                        ng-class="{ 'bg-danger': sms.messageDetails.status == 'failed', 
+                                                'bg-warning': sms.messageDetails.status == 'undelivered', 
+                                                'bg-success': sms.messageDetails.status == 'delivered', 
+                                                'bg-primary': sms.messageDetails.status == 'queued', 
+                                                'bg-secondary': sms.messageDetails.status == 'sending', 
+                                                'bg-info': sms.messageDetails.status == 'sent',  }">
+                                        {{sms.messageDetails.status}}
+                                    </div>    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 text-right py-2 border bg-light text-secondary">Total cost:</div>
+                            <div class="col-sm-9 py-2 border bg-white">{{-(sms.messageDetails.price) || '&ndash;' }} {{sms.messageDetails.priceUnit}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

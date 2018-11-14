@@ -1,0 +1,420 @@
+<div class="container-fluid" ng-controller="contactDetailsController as details">
+        <div class="row
+                justify-content-center
+                top-bar
+                bg-f8 ">
+            <div class="col-sm-12 d-flex justify-content-between align-items-center">
+                <div class="container  d-none d-sm-block">
+                    <div class="row">
+                        <div class="col d-flex justify-content-start align-items-center">
+                            <p class="h5 m-0">
+                                <a ui-sref="account.main.contacts" class="pointer text-decor-0 text-success">Contacts</a><span class="text-capitalize text-secondary h4"> / {{details.contact.name.firstName}} {{details.contact.name.lastName}} </span>
+                            </p>
+                        </div>
+                        <div class="col d-flex justify-content-end align-items-center">
+                            <div class="mr-1">
+                                <a href="#editContactDetails" class="btn btn-sm btn-secondary m-0" ng-click="details.showEditForm()">EDIT </a>
+                                <input id="editForm" type="checkbox" ng-model="details.edit" class="sr-only">
+                            </div>
+                            <div class="dropdown">
+                                <button data-toggle="dropdown"
+                                        ng-disabled="contacts.actionGroup.length &lt;= 0"
+                                        class="dropdown-toggle
+                                                px-3
+                                                btn
+                                                btn-sm
+                                                btn-success
+                                                outline-0">ACTIONS</button>
+                                <ul class="dropdown-menu mt-2 custom-dropdown-menu">
+                                    <!-- <li><a ui-sref="account.main.email" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text">Email </a></li> -->
+                                    <li><a ui-sref="account.main.sms.compose" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text" ng-click="details.assignAG([details.contact])">SMS </a></li>
+                                    <!-- <li><a ui-sref="account.main.letter" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text" ng-disabled="true">Letter </a></li> -->
+                                    <li data-toggle="modal" data-target="#notif-delete"><button class="btn btn-block btn-outline-danger border-0 text-left rounded-0 custom-btn-text" ng-disabled="true">Delete</button></li>
+                                </ul>
+                                <div ng-include="'notif-delete-note.html'"></div>
+                            </div>
+                           
+                        </div>
+                    </div>
+               
+                </div>
+                <div class="container d-sm-none">
+                    <!-- RESPONSIVE -->
+                    <div class="row pt-3">
+                        <div class="col-12 d-flex justify-content-start align-items-center">
+                            <p class="h5 m-0">
+                                <a ui-sref="account.main.contacts" class="pointer text-decor-0 text-success">Contacts</a><span class="text-capitalize text-secondary h4"> /  {{details.contact.name.firstName}} {{details.contact.name.lastName}} </span>
+                            </p>
+                        </div>
+                    </div> 
+                    <div class="row py-3 justify-content-end align-items-center">   
+                        <div class="col mr-1 ">
+                            <a href="#editContactDetails" class="d-block btn btn-block btn-sm btn-secondary m-0" ng-click="details.showEditForm()">EDIT </a>
+                            <input id="editForm" type="checkbox" ng-model="details.edit" class="sr-only">
+                        </div>
+                        <div class="col dropdown">
+                            <button data-toggle="dropdown"
+                                    ng-disabled="contacts.actionGroup.length &lt;= 0"
+                                    class="dropdown-toggle
+                                            px-3
+                                            btn
+                                            btn-block
+                                            btn-sm
+                                            btn-success
+                                            outline-0">ACTIONS</button>
+                            <ul class="dropdown-menu mt-2 custom-dropdown-menu">
+                                <!-- <li><a ui-sref="account.main.email" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text">Email </a></li> -->
+                                <li><a ui-sref="account.main.sms.compose" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text" ng-click="details.assignAG([details.contact])">SMS </a></li>
+                                <!-- <li><a ui-sref="account.main.letter" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text" ng-disabled="true">Letter </a></li> -->
+                                <li data-toggle="modal" data-target="#notif-delete"><button class="btn btn-block btn-outline-danger border-0 text-left rounded-0 custom-btn-text" ng-disabled="true">Delete</button></li>
+                            </ul>
+                            <div ng-include="'notif-delete-note.html'"></div>
+                        </div>
+                    </div>
+                    <!-- end -->
+                </div>
+            </div>
+        </div> 
+        <div class="row
+                    justify-content-center">
+            <div class="col-sm-12">
+                <div class="container">
+                    <div class="row py-4">
+                        <div class="col-sm-12">
+                            <div class="container border">
+                                <div class="row py-4 px-1">
+                                    <div class="col-sm-3 text-text-truncate ">
+                                        <h4 class="h4 h4__thin">Details</h4>
+                                        <ul class="list-unstyled">
+                                            <li class="text-secondary text-truncate ">{{details.contact.name.firstName}} {{details.contact.name.lastName}}</li>
+                                            <li class="text-secondary text-truncate font-italic">{{details.contact.company}} </li>
+                                            <li class="text-secondary text-truncate ">Phone1:<a href="tel:{{details.contact.phones.phone1}}" class="text-success text-decor-0"> {{details.contact.phones.phone1}}</a></li>
+                                            <li class="text-secondary text-truncate ">Phone2:<a href="tel:{{details.contact.phones.phone2}}" class="text-success text-decor-0"> {{details.contact.phones.phone2}}</a></li>
+                                            <li class="text-secondary text-truncate">Email:<a href="mailto:{{details.contact.email}}" class="text-success text-decor-0"> {{details.contact.email}}</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-3 text-truncate">
+                                        <h4 class="h4 h4__thin">Addresss</h4>
+                                        <ul class="list-unstyled">
+                                            <li class="mb-3">
+                                               
+                                                <h6 class="h6">Physical address</h6>
+                                                <!-- Old Billing address. In order not to change a model and the whole app only in thin place it was changed -->
+
+                                                <div class="text-secondary text-truncate">
+                                                    <span class="d-block">{{details.contact.address.billingAddress.address1}}</span>
+                                                    <!-- <span class="d-block">{{details.contact.address.billingAddress.address2}}</span> -->
+                                                    <span>
+                                                        {{details.contact.address.billingAddress.city}}<span ng-if="details.contact.address.billingAddress.zip">, </span></span>
+                                                        {{details.contact.address.billingAddress.state}}
+                                                    <span>{{details.contact.address.billingAddress.zip}}</span>
+                                                </div>
+                                            </li>
+                                            <li class="mb-3">
+                                                <h6 class="h6">Shipping address</h6>
+                                                <div class="text-secondary text-truncate">
+                                                    <span class="d-block">{{details.contact.address.shippingAddress.address1}}</span>
+                                                    <!-- <span class="d-block">{{details.contact.address.shippingAddress.address2}}</span> -->
+                                                    <span class="">
+                                                        {{details.contact.address.shippingAddress.city}}<span ng-if="details.contact.address.shippingAddress.zip">, </span>
+                                                    </span>
+                                                        {{details.contact.address.shippingAddress.state}}
+                                                    <span>{{details.contact.address.shippingAddress.zip}}</span>
+                                                    
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-3 text-truncate">
+                                        <h4 class="h4 h4__thin">Social media</h4>
+                                        <ul class="list-unstyled">
+                                            <li class="text-secondary text-truncate ">
+                                                <a href="{{details.setProtocol(details.contact.social.facebook)}}{{details.contact.social.facebook}}" target="_blank" class="text-secondary" ng-class="{'text-success': details.contact.social.facebook, 'text-decor-0': !details.contact.social.facebook, 'pointer-default': !details.contact.social.facebook}" ng-click="details.preventTransitionIfLinkIsEpsent($event, details.contact.social.facebook)">Facebook</a>
+                                            </li>
+                                            <li class="text-secondary text-truncate">
+                                                <a href="{{details.setProtocol(details.contact.social.twitter)}}{{details.contact.social.twitter}}" target="_blank" class="text-secondary" ng-class="{'text-success': details.contact.social.twitter, 'text-decor-0': !details.contact.social.twitter, 'pointer-default': !details.contact.social.twitter}" ng-click="details.preventTransitionIfLinkIsEpsent($event, details.contact.social.twitter)">Twitter</a>
+                                            </li>
+                                            <li class="text-secondary text-truncate">
+                                                <a href="{{details.setProtocol(details.contact.social.linkedin)}}{{details.contact.social.linkedin}}" target="_blank" class="text-secondary" ng-class="{'text-success': details.contact.social.linkedin, 'text-decor-0': !details.contact.social.linkedin, 'pointer-default': !details.contact.social.linkedin}" ng-click="details.preventTransitionIfLinkIsEpsent($event, details.contact.social.linkedin)">LinkedIn</a>
+                                            </li>
+                                            <li class="text-secondary text-truncate">
+                                                <a href="{{details.setProtocol(details.contact.social.youtube)}}{{details.contact.social.youtube}}" target="_blank" class="text-secondary" ng-class="{'text-success': details.contact.social.youtube, 'text-decor-0': !details.contact.social.youtube, 'pointer-default': !details.contact.social.youtube}" ng-click="details.preventTransitionIfLinkIsEpsent($event, details.contact.social.youtube)">Youtube</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-3 text-truncate">
+                                        <h4 class="h4 h4__thin">Tags</h4>
+                                        <span class="font-italic text-secondary">Coming soon ...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--  -->
+        <div id="editContactDetails"
+             ng-show="details.edit"
+             ng-hide="!details.edit"
+             class="row
+                    justify-content-center">
+            <div class="col-sm-12">
+                <div class="container">
+                    <h1 class="py-2 border-bottom mb-4">Edit contact details</h1>
+                    <form class="pb-2">
+                        
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="w-100 pr-2">
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="h4 text-right mt-3 mb-3">
+                                                Details
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">First Name:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.name.firstName"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Last Name:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.name.lastName"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Company:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.company"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Job Title:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.jobtitle"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Phone 1:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.phones.phone1"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Phone 2:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.phones.phone2"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Email</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.email"></div>
+                                    </div>
+                                </div>
+
+                                <div class="w-100 pr-2">
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="h4 text-right mt-3 mb-3">
+                                                Physical address
+                                                <!-- Old Billing address. In order not to change a model and the whole app only in thin place it was changed -->
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Address 1:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.address.billingAddress.address1"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Address 2:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.address.billingAddress.address2"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">City</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.address.billingAddress.city"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">State</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control form-control-sm pointer" ng-model="details.editContact.address.billingAddress.state">
+                                                <option value="" selected></option>
+                                                <option ng-repeat="state in details.states" value="{{state}}">{{state}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">ZIP:</label>
+                                        <div class="col-sm-9"><input type="text" maxlength="5" class="form-control form-control-sm" ng-keydown="details.validateZIP($event)" ng-model="details.editContact.address.billingAddress.zip" ng-change="details.test(this)"></div>
+                                    </div>
+
+                                </div>
+
+                                
+                            </div>
+                            <div class="col-sm-6 d-flex flex-column justify-content-between">
+                            
+                                <div class="w-100 pl-2">
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="h4 text-right mt-3 mb-3">
+                                                Social media
+                                            </p>
+                                        </div>
+                                    </div> 
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Facebook:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.social.facebook"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                            <label for="" class="col-sm-3 col-form-label">LinkedIn:</label>
+                                            <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.social.linkedin"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                            <label for="" class="col-sm-3 col-form-label">Twitter:</label>
+                                            <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.social.twitter"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                            <label for="" class="col-sm-3 col-form-label">YouTube:</label>
+                                            <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.social.youtube"></div>
+                                    </div>
+                                </div>
+                                
+                               
+
+                                <div class="w-100 pl-2">
+
+                                    <div class="row justify-content-end">
+                                        <div class="col-sm-9 px-3 d-flex align-items-center justify-content-between lh-1">
+                                            <div class="">
+
+                                                <div class="d-flex align-items-center" 
+                                                    ng-if="details.editContact.address.billingAddress.address1 ||
+                                                            details.editContact.address.billingAddress.address2 ||
+                                                            details.editContact.address.billingAddress.city ||
+                                                            details.editContact.address.billingAddress.state ||
+                                                            details.editContact.address.billingAddress.zip">
+    
+                                                            <label  class="custom-checkbox lh-1 m-0" ng-click="details.editContact.setShippingSameBilling()">
+                                                                    <input  type="checkbox"
+                                                                        id=""
+                                                                        class="btn default-checkbox"
+                                                                        ng-model="details.editContact.address.ShippingSameBilling"
+                                                                        ng-checked="details.editContact.address.ShippingSameBilling"
+                                                                        >
+                                                                    <span class="custom-checkbox-mark"></span>
+                                                            </label>
+                                                    <span class="small text-secondary text-truncate pl-1">same as physical</span>
+                                                    
+                                                </div>
+                                            </div>
+                                      
+                                            
+                                            <div class="h4 text-right mt-3 mb-3">
+                                                Shipping address
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Address 1:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.address.shippingAddress.address1"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">Address 2:</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.address.shippingAddress.address2"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">City</label>
+                                        <div class="col-sm-9"><input type="text" class="form-control form-control-sm" ng-model="details.editContact.address.shippingAddress.city"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">State</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control form-control-sm pointer" ng-model="details.editContact.address.shippingAddress.state">
+                                                <option value="" selected></option>
+                                                <option ng-repeat="state in details.states" value="{{state}}">{{state}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-3 col-form-label">ZIP:</label>
+                                        <div class="col-sm-9"><input type="text" maxlength="5" class="form-control  form-control-sm" ng-keydown="details.validateZIP($event)" ng-model="details.editContact.address.shippingAddress.zip" ng-change="details.test(this)"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                       <div class="d-flex justify-content-end my-4">
+                           <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#notif-save" ng-click="details.saveChanges()">SAVE CHANGES</button>
+                           <div ng-include="'notif-save.html'"></div>
+                       </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+<!--  -->
+        <div class="row justify-content-center" ng-if="details.contact.address.billingAddress.state && details.contact.address.billingAddress.city">
+            <div class="col-sm-12 mb-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="{{details.editContact._id}}" class="border gm-size">
+            
+                                <h3 class="border-bottom pb-2">Google maps API</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--  -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="container">
+                                <div class="row rounded-tabs">
+
+                                    <div ng-class="{'bg-success': details.activeTab === 'notes'}" class="col-sm-3 bg-secondary text-white text-center font-weight-bold">
+                                        <label class="w-100 h-100 m-0 py-2 pointer" ng-click="details.delayForInitDP()">
+
+                                            Notes
+                                            <input type="radio" name="activeTab" value="notes" ng-model="details.activeTab" class="sr-only"> 
+                                        </label>
+                                    </div>
+                                    <div ng-class="{'bg-success': details.activeTab === 'email'}" class="col-sm-3 bg-secondary text-white text-center font-weight-bold">
+                                        <label class="w-100 h-100 m-0 py-2 pointer ">
+
+                                            E-mail
+                                            <input type="radio" name="activeTab" value="email" ng-model="details.activeTab" class="sr-only">
+                                        </label>
+                                    </div>
+                                    <div ng-class="{'bg-success': details.activeTab === 'smsHistory'}" class="col-sm-3 bg-secondary text-white text-center font-weight-bold">
+                                        <label class="w-100 h-100 m-0 py-2 pointer ">
+
+                                            SMS
+                                            <input type="radio" name="activeTab" value="smsHistory" ng-model="details.activeTab" class="sr-only">
+                                        </label>
+                                    </div>
+                                    <div ng-class="{'bg-success': details.activeTab === 'letters'}" class="col-sm-3 bg-secondary text-white text-center font-weight-bold">
+                                        <label class="w-100 h-100 m-0 py-2 pointer ">
+
+                                            Letters
+                                            <input type="radio" name="activeTab" value="letters" ng-model="details.activeTab" class="sr-only">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--  -->
+        <div class="row justify-content-center mt-4" >
+            <div class="col-sm-12">
+                <div ng-include="'notes.partial.html'"  ng-if="details.activeTab === 'notes'"></div>
+                <div ng-include="'sms-history.partial.html'"  ng-if="details.activeTab === 'smsHistory'"></div>
+
+            </div>
+        </div>
+<!--  -->
+        
+</div>

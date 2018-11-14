@@ -1,0 +1,23 @@
+<div
+    class="modal fade"
+    id="notif-save">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border ">
+            
+            <div class="modal-header border-bottom bg-success">
+                <div class=" w-100">
+                        <h5 class="text-center mx-auto font-weight-bold text-light">Notice</h5>
+                </div>
+            </div>
+            <div class="modal-body px-3 font-weight-light text-center border border-success rounded-bottom">
+                <h3 class="my-4 py-4">Changes Have Been Saved</h3>
+                
+            </div>
+            <div class="d-flex justify-content-center py-3"
+                 ng-hide="true">
+                <button class="px-4 btn btn-sm btn-success font-weight-bold" data-dismiss="modal" ng-click="contacts.createNewContact()">SAVE</button>
+                <button class="px-3 btn btn-sm btn-link vm_hide-notif" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

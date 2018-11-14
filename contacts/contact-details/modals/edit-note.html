@@ -1,0 +1,45 @@
+<div
+    class="modal fade"
+    id="editNote">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content px-2">
+            <div class="modal-header border-bottom-0 pb-0">
+                <div class="border-bottom w-100">
+                    <h3 class="text-center mx-auto font-weight-bold p-2 mt-2">Edit Note</h3>
+                </div>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="container-fluid">
+                    
+                    <div class="row justify-content-left my-4" ng-class="{'empty-date': details.emptyDate}">
+                        <label for="" class="col-sm-1 pl-0 pr-5 mt-2">Date:</label>
+                        <div class="input-group date col-sm-3 px-0">
+                            <input type="text"
+                                    id="datepickerForExisting"
+                                    class="form-control"
+                                    ng-keyup="details.ngModel($event)"
+                                    ng-focus="details.emptyDate = false"
+                                    >
+                                    
+                        </div>
+                        
+                    </div>
+                    <div class="row justify-content-left my-4">
+                        <div class="col-sm-10 px-0" ng-class="{'empty-note': details.emptyNote}">
+                            <textarea class="form-control"
+                                        rows="5"
+                                        ng-model="details.note.description"
+                                        ng-focus="details.emptyNote = false"
+                                        ng-blur="details.clearNoteArea($event)"></textarea>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="d-flex justify-content-center my-4">
+                <button class="px-3 btn btn-sm btn-link" data-dismiss="modal" ng-click="details.emptyNote = false;">Cancel</button>
+                <button class="px-4 btn btn-sm btn-success font-weight-bold" data-dismiss="modal" ng-click="details.updateNote($event)">SAVE CHANGES</button>
+            </div>
+        </div>
+    </div>
+</div>

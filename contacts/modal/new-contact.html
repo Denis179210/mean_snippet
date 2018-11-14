@@ -1,0 +1,58 @@
+<div
+    class="modal fade pr-0"
+    id="newContact">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content h-100">
+            <div class="modal-header border-bottom-0">
+                <div class="border-bottom w-100">
+                        <h5 class="text-center mx-auto font-weight-bold">Add New Contact</h5>
+                </div>
+            </div>
+            <div class="modal-body px-3 font-weight-bold">
+                <div class="form-group row my-2">
+                    <label for="name" class="col-4 col-md-3 col-form-label text-right pt-1 pr-0">First Name</label>
+                    <div class="col-8 col-sm-7 col-md-9">
+                        <input id="name" type="text" class="form-control form-control-sm " ng-model="contacts.newContact.name.firstName">
+                    </div>
+                </div>
+                <div class="form-group row my-2">
+                    <label for="name" class="col-4 col-md-3 col-form-label text-right pt-1 pr-0">Last Name</label>
+                    <div class="col-8 col-sm-7 col-md-9">
+                        <input id="name" type="text" class="form-control form-control-sm " ng-model="contacts.newContact.name.lastName">
+                    </div>
+                </div>
+                <div class="form-group row my-2">
+                    <label for="name" class="col-4 col-md-3 col-form-label text-right pt-1 pr-0">Company</label>
+                    <div class="col-8 col-sm-7 col-md-9">
+                        <input id="name" type="text" class="form-control form-control-sm" ng-model="contacts.newContact.company">
+                    </div>
+                </div>
+                <div class="form-group row my-2">
+                    <label for="name" class="col-4 col-md-3 col-form-label text-right pt-1 pr-0">Email</label>
+                    <div class="col-8 col-sm-7 col-md-9">
+                        <input id="name" type="text" class="form-control form-control-sm " ng-model="contacts.newContact.email">
+                    </div>
+                </div>
+                <div class="form-group row my-2">
+                    <label for="name" class="col-4 col-md-3 col-form-label text-right pt-1 pr-0">Phone #</label>
+                    <div class="col-8 col-sm-7 col-md-9">
+                        <input id="name" type="text" class="form-control form-control-sm " ng-model="contacts.newContact.phones.phone1">
+                    </div>
+                </div>
+                <div class="form-group row mb-0">
+                    <label for="name" class="col-4 col-md-3 col-form-label text-right pt-1 pr-0 ">Apply tag</label>
+                    <div class="col-8 col-sm-7 col-md-9">
+                        <button class="btn btn-link px-0 font-italic custom-btn-text" disabled>Coming Soon ...</button>
+                    </div>
+                </div>
+
+                
+                
+            </div>
+            <div class="d-flex justify-content-center py-3">
+                <button class="px-4 btn btn-sm btn-success font-weight-bold" data-dismiss="modal" ng-click="contacts.createNewContact()" ng-disabled="contacts.disable();">SAVE</button>
+                <button class="px-3 btn btn-sm btn-link" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

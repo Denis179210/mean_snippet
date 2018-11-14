@@ -1,0 +1,501 @@
+<div ng-controller="contactsController as contacts">
+    <div class="container-fluid">
+            <div class="row no-contacts
+                        justify-content-center
+                        align-items-center
+                        top-bar
+                        bg-light ">
+                <div class="col-sm-12">
+                    <div class="container">
+                        <div class="row justify-content-between">
+                            <div class="col-4
+                                        col-sm-6
+                                        col-md-5    
+                                        d-flex
+                                        align-items-center">
+                                <div>
+                                    <button class="btn btn-sm btn-success outline-0"
+                                            data-toggle="modal"
+                                            data-target="#newContact"><span class="px-3 d-inline d-md-none"> +  New</span> <span class="d-none d-md-inline">+ New Contact</span></button>
+                                    <div ng-include="'new-contact.html'"></div>
+                                </div>
+                                <div class="d-none d-md-flex">
+                                    <span class="mr-1 d-none d-sm-inline-block"></span>
+                                    <button class="btn btn-link text-dark mb-0 px-1" data-toggle="modal" data-target="#importContact">Import <span class="d-none d-sm-inline">Contacts</span> ...</button>
+                                    <div ng-include="'import-contact.html'"></div>
+                                    <div ng-include="'export-contact.html'"></div>
+            
+                                </div>
+                            </div>
+                            <div class="col-7
+                                        col-sm-6
+                                        col-md-4
+                                        pl-0
+                                        d-flex
+                                        align-items-center">
+                                <div class="input-group">
+                                    <input  
+                                        class="form-control search"
+                                        type="text"
+                                        placeholder="Search by name, email, or company"
+                                        ng-model-options="{ debounce: 400 }"
+                                        ng-model="contacts.searchQuery"
+                                        ng-change="contacts.searchContacts(0, contacts.sortParam, true)"
+                                        ng-blur="">
+                                    <div class="input-group-append"  ng-if="contacts.searchQuery">
+                                        <button type="button" class="btn btn-outline-secondary px-1" ng-click="contacts.clear(); contacts.searchContacts(contacts.activePage, contacts.sortParam, true)">clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center"
+                 ng-include="'no-contacts.html'"
+                 ng-if="contacts.contacts.length === 0 && !contacts.searchQuery">
+
+            </div>
+            <div class="row justify-content-center"
+                 ng-include="'no-matched-contacts.html'"
+                 ng-if="contacts.contacts.length === 0 && contacts.searchQuery">
+
+            </div>
+            <div class="row
+                       justify-content-center"
+                 ng-if="contacts.contacts.length > 0">
+
+               <div class="col-sm-12
+                           d-flex
+                           justify-content-between
+                           py-2">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 py-2 col-md-6 d-flex
+                                        justify-content-start
+                                        align-items-center">
+                                <div class="dropdown actions-wrapper">
+                                    <button data-toggle="dropdown"
+                                            ng-disabled="contacts.actionGroup.length &lt;= 0"
+                                            class="dropdown-toggle
+                                                    btn btn-sm
+                                                    btn-outline-secondary
+                                                    outline-0">Actions</button>
+                                    <ul class="dropdown-menu mt-1">
+                                        <!-- <li><a ui-sref="account.main.email" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text">Email </a></li> -->
+                                        <li><a ui-sref="account.main.sms.compose" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text" ng-click="contacts.assignAG(contacts.actionGroup)">SMS </a></li>
+                                        <li><a ui-sref="account.main.map" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text" ng-click="contacts.assignAG(contacts.actionGroup)">Map </a></li>
+                                        <!-- <li><a ui-sref="account.main.letter" class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text">Letter </a></li> -->
+                                        <li><span class="btn btn-block btn-outline-primary border-0 text-left rounded-0 custom-btn-text"  data-toggle="modal" data-target="#exportContact">Export</span></li>
+                                        <li data-toggle="modal" data-target="#notif-delete"><span class="btn btn-block btn-outline-danger border-0 text-left rounded-0 custom-btn-text">Delete</span></li>
+                                    </ul>
+                                    <div ng-include="'notif-delete.html'"></div>
+                                </div>
+                                <div class="px-2 mb-0 selected-contacts-pointer">
+                                    <span class="text-muted"><span ng-if="contacts.contacts.length == 0">0</span> 
+                                    <span ng-if="contacts.contacts.length > 0">{{contacts.activePage * contacts.ratePointer + 1}}</span>&ndash;{{((contacts.activePage * contacts.ratePointer) + contacts.ratePointer) > contacts.contactsAmount ? contacts.contactsAmount : ((contacts.activePage * contacts.ratePointer) + contacts.ratePointer) }} of</span> 
+                                    <span> {{contacts.contactsAmount}} </span>
+                                    <!-- <br class="hidden-sm"> -->
+                                    <span ng-if="contacts.actionGroup.length > 0" class="d-inline-block font-weight-bold">({{contacts.actionGroup.length}} selected)</span>
+                                    <div class="selected-contacts" ng-if="contacts.actionGroup.length > 0" >
+                                        <span class="d-none font-weight-bold">{{contacts.actionGroup.length}} selected</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 d-none d-md-flex justify-content-end align-items-center">
+                                <div class="">
+                                    <span>View:</span>
+                                    <label for="rp-10" class="btn btn-sm p-0 m-0" ng-class="{ 'text-success': contacts.ratePointer === 10 }">10</label><span> | </span>
+                                    <input type="radio" id="rp-10" ng-hide="true" ng-model='contacts.ratePointer' ng-value="10" ng-click="contacts.showRate()"> 
+                                    <label for="rp-20" class="btn btn-sm p-0 m-0" ng-class="{ 'text-success': contacts.ratePointer === 20 }">20</label><span> | </span>
+                                    <input type="radio" id="rp-20" ng-hide="true" ng-model='contacts.ratePointer' ng-value="20" ng-click="contacts.showRate()"> 
+                                    <label for="rp-50" class="btn btn-sm p-0 m-0" ng-class="{ 'text-success': contacts.ratePointer === 50 }">50</label><span> | </span>
+                                    <input type="radio" id="rp-50" ng-hide="true" ng-model='contacts.ratePointer' ng-value="50" ng-click="contacts.showRate()"> 
+                                    <label for="rp-100" class="btn btn-sm p-0 m-0" ng-class="{ 'text-success': contacts.ratePointer === 100 }">100</label>
+                                    <input type="radio" id="rp-100" ng-hide="true" ng-model='contacts.ratePointer' ng-value="100" ng-click="contacts.showRate()"> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+               </div>
+           </div>
+            <div class="row
+                        justify-content-center"
+                 ng-if="contacts.contacts.length > 0">
+                
+                <div class="col-sm-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="container border">
+                                    <div class="row
+                                                contact-table-header position-relative bg-light hidden-md">
+
+                                        <div class="col-8 py-1">
+
+                                            <button class="btn btn-success btn-block my-1 outline-0 position-relative" ng-click="contacts.slide ? contacts.slide = false : contacts.slide = true">
+                                                <span class="d-inline-block w-100 transition" ng-class="{'slide-left': contacts.slide}"> Sort by ...</span>
+                                                <span class="position-absolute slide-right-default transition" ng-class="{'slide-right': contacts.slide}">Hide</span>
+                                            </button>
+                                            <div class="sort-params-overlay" ng-show="contacts.slide">
+
+                                                <div class="position-relative">
+                                                    <ul class="list-unstyled position-absolute sort-params-list bg-white py-3" ng-if="!contacts.overlayMenu">
+                                                        <li class=" px-3" > 
+                                                            <label class="cursor d-flex justify-content-between">
+                                                                <span class="">FIRST NAME </span>
+                                                                <input type="checkbox" class="sr-only"
+                                                                        ng-model="contacts.sortContactsBy.firstName"
+                                                                        ng-click="contacts.asignSortParam({
+                                                                                                    flag: 'firstName',
+                                                                                                    sortParam: 'name.firstName'
+                                                                                                })">
+                                                                <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('name.firstName')}" ng-if="!contacts.sortContactsBy.firstName"></i>
+                                                                <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('name.firstName')}" ng-if="contacts.sortContactsBy.firstName"></i>
+                                                            </label>
+                                                        </li>
+                                                        <li class=" px-3"> 
+                                                            <label class="cursor d-flex justify-content-between">
+                                                                <span class="">LAST NAME </span>
+                                                                <input type="checkbox" class="sr-only" ng-model="contacts.sortContactsBy.lastName"
+                                                                        ng-click="contacts.asignSortParam({
+                                                                                                    flag: 'lastName',
+                                                                                                    sortParam: 'name.lastName'
+                                                                                                })">
+                                                                <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('name.lastName')}" ng-if="!contacts.sortContactsBy.lastName"></i>
+                                                                <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('name.lastName')}" ng-if="contacts.sortContactsBy.lastName"></i>
+                                                            </label>
+                                                        </li>
+                                                        <li class=" px-3" >
+                                                            <label class="cursor d-flex justify-content-between">
+                                                                <span class="">EMAIL </span>
+                                                                <input type="checkbox" class="sr-only" ng-model="contacts.sortContactsBy.email"
+                                                                        ng-click="contacts.asignSortParam({
+                                                                                                    flag: 'email',
+                                                                                                    sortParam: 'email'
+                                                                                                })">
+                                                                <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('email')}" ng-if="!contacts.sortContactsBy.email"></i>
+                                                                <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('email')}" ng-if="contacts.sortContactsBy.email"></i>
+                                                            </label>
+                                                        </li>
+                                                        <li class=" px-3">
+                                                            <label class="cursor d-flex justify-content-between">
+                                                                <span class="">PHONE NUMBER </span>
+                                                                <input type="checkbox" class="sr-only" ng-model="contacts.sortContactsBy.phone1"
+                                                                        ng-click="contacts.asignSortParam({
+                                                                                                    flag: 'phone1',
+                                                                                                    sortParam: 'phones.phone1'
+                                                                                                })">
+                                                                <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('phones.phone1')}" ng-if="!contacts.sortContactsBy.phone1"></i>
+                                                                <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('phones.phone1')}" ng-if="contacts.sortContactsBy.phone1"></i>
+                                                            </label>
+                                                        </li>
+                                                        <li class=" px-3">
+                                                            <label class="cursor d-flex justify-content-between">
+                                                                <span class="">COMPANY </span>
+                                                                <input type="checkbox" class="sr-only" ng-model="contacts.sortContactsBy.company"
+                                                                        ng-click="contacts.asignSortParam({
+                                                                                                    flag: 'company',
+                                                                                                    sortParam: 'company'
+                                                                                                })">
+                                                                <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('company')}" ng-if="!contacts.sortContactsBy.company"></i>
+                                                                <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('company')}" ng-if="contacts.sortContactsBy.company"></i>
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="lh-1 fixed-checkbox fixed-checkbox__all" ng-if="contacts.contacts.length > 0">
+                                            
+                                            <label class="custom-checkbox m-0">
+                                                <input type="checkbox"
+                                                        class="btn default-checkbox"
+                                                        ng-model="contacts.allContactsChecked"
+                                                        ng-click='contacts.actionGroupAll()'>
+                                                <span class="custom-checkbox-mark"></span>
+                                            </label>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="row
+                                                contact-table-header position-relative bg-light shown-md">
+                
+                                        <div class="px-3 d-flex align-items-center position-relative">
+                                            <div class="lh-1" ng-if="contacts.contacts.length > 0">
+                                                
+                                                <label class="custom-checkbox m-0">
+                                                    <input type="checkbox"
+                                                            class="btn default-checkbox"
+                                                            
+                                                            ng-model="contacts.allContactsChecked"
+                                                            ng-click='contacts.actionGroupAll()'>
+                                                    <span class="custom-checkbox-mark"></span>
+                                                </label>
+                                                
+                                            </div>
+                                        </div> 
+                                        <div class="col-sm-11 pl-0">
+
+                                            <div class="row d-block d-sm-flex text-left mx-1">
+                                                    
+                                                    <div class="col-sm-2
+                                                                py-2
+                                                                user-select-0">
+                                                        <label class="cursor">
+                                                            <span class="">FIRST NAME </span>
+                                                            <input type="checkbox" class="sr-only"
+                                                                    ng-model="contacts.sortContactsBy.firstName"
+                                                                    ng-click="contacts.asignSortParam({
+                                                                                                flag: 'firstName',
+                                                                                                sortParam: 'name.firstName'
+                                                                                            })">
+                                                            <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('name.firstName')}" ng-if="!contacts.sortContactsBy.firstName"></i>
+                                                            <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('name.firstName')}" ng-if="contacts.sortContactsBy.firstName"></i>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-2 
+                                                                py-2
+                                                                user-select-0">
+                                                        <label class="cursor">
+                                                            <span class="">LAST NAME </span>
+                                                            <input type="checkbox" class="sr-only" ng-model="contacts.sortContactsBy.lastName"
+                                                                    ng-click="contacts.asignSortParam({
+                                                                                                flag: 'lastName',
+                                                                                                sortParam: 'name.lastName'
+                                                                                            })">
+                                                            <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('name.lastName')}" ng-if="!contacts.sortContactsBy.lastName"></i>
+                                                            <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('name.lastName')}" ng-if="contacts.sortContactsBy.lastName"></i>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-3 
+                                                                py-2
+                                                                user-select-0">
+                                                        <label class="cursor">
+                                                            <span class="">EMAIL </span>
+                                                            <input type="checkbox" class="sr-only" ng-model="contacts.sortContactsBy.email"
+                                                                    ng-click="contacts.asignSortParam({
+                                                                                                flag: 'email',
+                                                                                                sortParam: 'email'
+                                                                                            })">
+                                                            <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('email')}" ng-if="!contacts.sortContactsBy.email"></i>
+                                                            <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('email')}" ng-if="contacts.sortContactsBy.email"></i>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-3 
+                                                                py-2
+                                                                user-select-0">
+                                                        <label class="cursor">
+                                                            <span class="">PHONE NUMBER </span>
+                                                            <input type="checkbox" class="sr-only" ng-model="contacts.sortContactsBy.phone1"
+                                                                    ng-click="contacts.asignSortParam({
+                                                                                                flag: 'phone1',
+                                                                                                sortParam: 'phones.phone1'
+                                                                                            })">
+                                                            <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('phones.phone1')}" ng-if="!contacts.sortContactsBy.phone1"></i>
+                                                            <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('phones.phone1')}" ng-if="contacts.sortContactsBy.phone1"></i>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-2 
+                                                                py-2
+                                                                user-select-0">
+                                                        <label class="cursor">
+                                                            <span class="">COMPANY </span>
+                                                            <input type="checkbox" class="sr-only" ng-model="contacts.sortContactsBy.company"
+                                                                    ng-click="contacts.asignSortParam({
+                                                                                                flag: 'company',
+                                                                                                sortParam: 'company'
+                                                                                            })">
+                                                            <i class="ti-arrow-down text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('company')}" ng-if="!contacts.sortContactsBy.company"></i>
+                                                            <i class="ti-arrow-up text-secondary glyph-size" ng-class="{highlited: contacts.highliteArrows('company')}" ng-if="contacts.sortContactsBy.company"></i>
+                                                        </label>
+                                                    </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row border-bottom position-relative" ng-repeat="contact in contacts.contacts" ng-class-even="'bg-light'">
+                                        <div class="px-3 lh-1 d-flex align-items-center shown-md ">
+                
+                                                <label class="custom-checkbox lh-1 m-0">
+                                                    <input  type="checkbox"
+                                                        class="btn default-checkbox"
+                                                        ng-click='contacts.addContactToActionGroup(contact)'
+                                                        ng-checked="contacts.checked(contact)">
+                                                    <span class="custom-checkbox-mark"></span>
+                                                </label>
+                                            
+                                        </div>
+                                        <a ui-sref="account.main.contact-details({id: contact._id})" class="d-block col-sm-11 btn py-0 pl-0">
+                                            <div ng-class-even="'bg-light'"
+                                                    class="row
+                                                        text-dark
+                                                        text-left
+                                                        mx-1
+                                                        shown-md">
+                
+                                                <div class="col-sm-2
+                                                            py-3 text-truncate font-weight-bold"
+                                                        >{{contact.name.firstName}}</div>
+                                                <div class="col-sm-2
+                                                            py-3 text-truncate font-weight-bold"
+                                                        >{{contact.name.lastName}}</div>
+                                                <div class="col-sm-3
+                                                            text-truncate
+                                                            py-3"
+                                                        >{{contact.email}}</div>
+                                                <div class="col-sm-3
+                                                            text-truncate
+                                                            py-3"
+                                                        >{{contact.phones.phone1}}</div>
+                                                <div class="col-sm-2
+                                                            text-truncate
+                                                            py-3"
+                                                        >{{contact.company}}</div>
+                                            </div>
+                                            <!-- RESPONSIVE -->
+                                            <div ng-class-even="'bg-light'"
+                                                class="row
+                                                    text-dark
+                                                    text-left
+                                                    container contact-table-body
+                                                    mx-1 my-3 hidden-md">
+
+                                                        <div class="col-sm-12 h4 mb-1
+                                                                    py-3 text-truncate font-weight-bold contact-data"
+                                                                >{{contact.name.firstName}} {{contact.name.lastName}}</div>
+                                                        <div class="col-sm-12
+                                                                    text-truncate
+                                                                    py-3 contact-data small text-secondary"
+                                                                ><span><i class="fas fa-envelope"></i> </span> {{contact.email}}</div>
+                                                        <div class="col-sm-12
+                                                                    text-truncate
+                                                                    py-3 contact-data small text-secondary"
+                                                                ><span><i class="fas fa-phone"></i> </span> {{contact.phones.phone1}}</div>
+                                                        <div class="col-sm-12
+                                                                    d-inline-block
+                                                                    text-truncate
+                                                                    py-3 contact-data small text-secondary"
+                                                                ><span><i class="fas fa-building"></i> </span> {{contact.company}}</div>
+                                            </div>
+                                            
+                                            <!-- END -->
+                                        </a>
+                                        <div class="hidden-md fixed-checkbox">
+    
+                                                <label class="custom-checkbox lh-1 m-0">
+                                                        <input  type="checkbox"
+                                                            id=""
+                                                            class="btn default-checkbox"
+                                                            ng-click='contacts.addContactToActionGroup(contact)'
+                                                            ng-checked="contacts.checked(contact)">
+                                                        <span class="custom-checkbox-mark"></span>
+                                                </label>
+                                            
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="row
+                       justify-content-center
+                       my-3">
+            <div class="col-sm-12">
+                <div class="container">
+                    <div class="row justify-content-end">
+                        <div class="col-md-4
+                                    col-12
+                                    text-center px-0">
+                            <nav  ng-if="contacts.pagesTotal.length > 0" class="d-flex justify-content-center">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        
+                                        <div class=" btn px-2 border-0 text-secondary" aria-label="Previous" ng-click="contacts.prevPage(contacts.activePage - 1)">
+                                            <span aria-hidden="true" class=""><i class="fas fa-caret-left"></i></span>
+                                            <span class="sr-only">Previous</span>
+                                        </div>
+                                    </li>
+                                    <li class="page-item"  ng-hide="!contacts.hideBegin()"
+                                        ng-class="{active: $index == contacts.activePage}">
+                                        
+                                        <button class="border-0 btn btn-link text-secondary px-1"
+                                                ng-class="{'text-success': $index == contacts.activePage}"
+                                                ng-if="contacts.pagesTotal.length > contacts.rangePointer"
+                                                ng-hide="!contacts.hideBegin()"
+                                                ng-click="contacts.searchQuery.length > 0 ? contacts.searchContacts(0, contacts.sortParam) : contacts.getContacts(0, null, contacts.sortParam)">{{contacts.pagesTotal[0]}}<span class="sr-only">(current)</span></button>
+                                    </li>
+                                    <li class="page-item"  ng-hide="!contacts.hideBegin()"
+                                        ng-class="{active: $index == contacts.activePage}">
+                                        
+                                        <button class="border-0 btn btn-link text-secondary px-1"
+                                                ng-class="{'text-success': $index == contacts.activePage}"
+                                                ng-if="contacts.pagesTotal.length > contacts.rangePointer"
+                                                ng-hide="!contacts.hideBegin()">...<span class="sr-only">(current)</span></button>
+                                    </li>
+                                    <li class="page-item"
+                                        ng-class="{active: $index == contacts.activePage}"
+                                        ng-repeat="page in contacts.pagesTotal"
+                                        ng-hide="contacts.skipPage($index + 1)">
+                                        
+                                        <button class="border-0 btn btn-link text-secondary px-1"
+                                                ng-class="{'text-success': $index == contacts.activePage}"
+                                                ng-click="contacts.searchQuery.length > 0 ? contacts.searchContacts($index, contacts.sortParam) : contacts.getContacts($index, null, contacts.sortParam)">{{page}}<span class="sr-only">(current)</span></button>
+                                    </li>
+                                    <li class="page-item" ng-hide="contacts.hideEnd()"
+                                        ng-class="{active: $index == contacts.activePage}">
+                                        
+                                        <button class="border-0 btn btn-link text-secondary px-1"
+                                                ng-class="{'text-success': $index == contacts.activePage}"
+                                                ng-if="contacts.pagesTotal.length > contacts.rangePointer"
+                                                ng-hide="contacts.hideEnd()">...<span class="sr-only">(current)</span></button>
+                                    </li>
+                                    <li class="page-item" ng-hide="contacts.hideEnd()"
+                                        ng-class="{active: $index == contacts.activePage}">
+        
+                                        <button class="border-0 btn btn-link text-secondary px-1"
+                                                ng-class="{'text-success': $index == contacts.activePage}"
+                                                ng-if="contacts.pagesTotal.length > contacts.rangePointer"
+                                                ng-hide="contacts.hideEnd()"
+                                                ng-click="contacts.searchQuery.length > 0 ? contacts.searchContacts(contacts.pagesTotal.length - 1, contacts.sortParam) : contacts.getContacts(contacts.pagesTotal.length - 1, null, contacts.sortParam)">{{contacts.pagesTotal[contacts.pagesTotal.length - 1]}}<span class="sr-only">(current)</span></button>
+                                    </li>
+                                    <li class="page-item">
+                                        <div class="btn px-2 border-0 text-secondary" aria-label="Next" ng-click="contacts.nextPage(contacts.activePage + 1)">
+                                            <span aria-hidden="true">	
+                                                    <i class="fas fa-caret-right"></i></span>
+                                            <span class="sr-only">Next</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="col-sm-4 pl-0 text-right"
+                                ng-if="contacts.contacts.length > 0">
+                                <div class="py-1 d-none d-md-block">
+
+                                    <span>View:</span>
+                                    <label for="rp-10" class="btn btn-sm p-0 m-0" ng-class="{ 'text-success': contacts.ratePointer === 10 }">10</label><span> | </span>
+                                    <input type="radio" id="rp-10" ng-hide="true" ng-model='contacts.ratePointer' ng-value="10" ng-click="contacts.showRate()"> 
+                                    <label for="rp-20" class="btn btn-sm p-0 m-0" ng-class="{ 'text-success': contacts.ratePointer === 20 }">20</label><span> | </span>
+                                    <input type="radio" id="rp-20" ng-hide="true" ng-model='contacts.ratePointer' ng-value="20" ng-click="contacts.showRate()"> 
+                                    <label for="rp-50" class="btn btn-sm p-0 m-0" ng-class="{ 'text-success': contacts.ratePointer === 50 }">50</label><span> | </span>
+                                    <input type="radio" id="rp-50" ng-hide="true" ng-model='contacts.ratePointer' ng-value="50" ng-click="contacts.showRate()"> 
+                                    <label for="rp-100" class="btn btn-sm p-0 m-0" ng-class="{ 'text-success': contacts.ratePointer === 100 }">100</label>
+                                    <input type="radio" id="rp-100" ng-hide="true" ng-model='contacts.ratePointer' ng-value="100" ng-click="contacts.showRate()"> 
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,176 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="container border" ng-if="details.smsHistory.length > 0"  ng-class="{ 'contact-list': details.smsHistory.length > 10, 'contact-list__lg': details.smsHistory.length > 10}">
+                <div class="row contact-table-header border-top bg-light shown-md">
+                    <div class="col-sm-12 px-0 ">
+                        <div class="container px-0">
+                            <div class="row no-gutters text-left mx-2">
+                                <div class="col-sm-2
+                                            py-2
+                                            user-select-0">
+                                    <span class="">To </span>
+                                </div>
+                                <div class="col-sm-2
+                                            py-2
+                                            user-select-0">
+                                    <span class="">Phone </span>
+                                </div>
+                                <div class="col-sm-3
+                                            py-2 px-1
+                                            user-select-0">
+                                    <span class="">Message </span>
+                                </div>
+                                <div class="col-sm-2
+                                    py-2
+                                    user-select-0">
+                                    <span class="">Date </span>
+                                </div>
+                                <div class="col-sm-2
+                                            py-2
+                                            user-select-0">
+                                    <span class="">Status </span>
+                                </div>
+                                <div class="col-sm-1
+                                            py-2 
+                                            text-center
+                                            user-select-0">
+                                    <span class="">View </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row border-bottom" ng-repeat="sms in details.smsHistory" ng-class-even="'bg-light'">
+                    
+                    <div ng-include="'sms-details.modal.html'" ng-if="sms.showDetails"></div>
+                    <div class="col-sm-12 py-0 pl-1 pr-0">
+                        <div class="container shown-md px-0">
+                            <div ng-class-even="'bg-light'"
+                                    class="row no-gutters
+                                        text-dark
+                                        text-left
+                                        mx-2">
+                                <div class="col-sm-2
+                                            py-3 text-truncate">
+                                    <div class="text-info font-weight-bold text-truncate">{{sms.contact.name.firstName}} {{sms.contact.name.lastName}}</div>
+                                </div>
+                                <div class="col-sm-2
+                                            py-3 text-truncate">
+                                    <div>
+                                        <span class="d-inline-block bg-info-lighter font-weight-normal text-info-darker custom-rounded py-0 px-2">
+                                            {{sms.messageDetails.to}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3
+                                            py-3 px-1
+                                            buble-container">
+                                    <div ng-mouseover="sms.bubleMessage = true; details.computeBubleOffset($event, sms)"
+                                            ng-mouseleave="sms.bubleMessage = false;">
+                                        <div class="m-0 text-truncate text-secondary">
+                                            {{sms.messageDetails.body}}
+                                        </div>
+                                        <div ng-if="sms.bubleMessage" class="custom-arrow">
+                                            <div class="custom-arrow_inner"></div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="sms.bubleMessage" class="buble-message">
+                                        <div class="buble-message_inner">
+                                            <div>
+                                                {{sms.messageDetails.body}}   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2
+                                            text-truncate
+                                            py-3"
+                                            >
+                                    <div><span class="d-inline-block custom-rounded bg-darky text-secondary px-2 py-0"> {{sms.messageDetails.dateCreated | date : 'dd MMM yyyy'}} </span></div>
+                                </div>
+                                <div class="col-sm-2
+                                            text-truncate
+                                            d-flex align-items-center
+                                            py-3">
+                                    <div class="w-100 rounded p-0 text-white text-center text-uppercase font-weight-bold small"
+                                        ng-class="{ 'bg-danger': sms.messageDetails.status == 'failed', 
+                                                    'bg-warning': sms.messageDetails.status == 'undelivered', 
+                                                    'bg-success': sms.messageDetails.status == 'delivered', 
+                                                    'bg-primary': sms.messageDetails.status == 'queued', 
+                                                    'bg-secondary': sms.messageDetails.status == 'sending', 
+                                                    'bg-info': sms.messageDetails.status == 'sent',  }">
+                                        {{sms.messageDetails.status}}
+                                    </div>    
+                                </div>
+                                <div ng-if="true" class="col-sm-1
+                                            text-truncate
+                                            py-3">
+                                    <div class="p-0 text-secondary text-center pointer" ng-click="sms.showDetailsInfo()">
+                                            <i class="fas fa-info-circle"></i>
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Responsive -->
+                        <div class="container border hidden-md " ng-if="details.smsHistory.length > 0"  ng-class="{ 'contact-list': details.smsHistory.length > 10, 'contact-list__lg': details.smsHistory.length > 10}">
+            
+                            <div ng-repeat="sms in details.smsHistory" ng-class-even="'bg-light'"
+                                class="row  my-3
+                                        text-dark
+                                        text-left
+                                        px-3
+                                        contact-table-body">
+                                <div class="col d-flex justify-content-between h4 mb-1
+                                            py-3 text-truncate font-weight-bold contact-data">
+                                    <div class=" text-truncate">
+                                        <span class="m-0 pointer text-primary">{{sms.contact.name.firstName}} {{sms.contact.name.lastName}}</span>
+                                    </div>
+                                    <div class="p-0 text-secondary text-center pointer" ng-click="sms.showDetailsInfo()">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div> 
+                                </div>
+                                <div class="col-sm-12
+                                            text-truncate
+                                            py-3 contact-data text-secondary">
+                                    <span><i class="fas fa-phone"></i> </span>
+                                    <span> {{sms.messageDetails.to}} </span>
+                                </div>
+                                <div class="col-sm-12
+                                            d-flex
+                                            py-3 contact-data text-secondary">
+                                    <span class="d-inline-block"><i class="fas fa-comment"></i> </span> <span class="pl-1"> {{sms.messageDetails.body}}</span></div>
+                                <div class="col-sm-12
+                                            text-truncate
+                                            py-3 contact-data text-secondary">
+                                    <span><i class="fas fa-calendar-alt"></i> </span> {{sms.messageDetails.dateCreated | date : 'dd MMM yyyy'}}</div>
+                                <div class="col-sm-12
+                                            text-truncate
+                                            py-3 contact-data text-secondary">
+                                    <span><i class="fas fa-truck"></i> </span>
+                                    <span class="text-center text-uppercase" 
+                                            ng-class="{ 'text-danger': sms.messageDetails.status == 'failed', 
+                                                        'text-warning': sms.messageDetails.status == 'undelivered', 
+                                                        'text-success': sms.messageDetails.status == 'delivered', 
+                                                        'text-primary': sms.messageDetails.status == 'queued', 
+                                                        'text-secondary': sms.messageDetails.status == 'sending', 
+                                                        'text-info': sms.messageDetails.status == 'sent',  }">
+                                        {{sms.messageDetails.status}}
+                                    </span>
+                                </div>
+                            </div>
+            
+            
+                        </div>
+                        <!-- end -->
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

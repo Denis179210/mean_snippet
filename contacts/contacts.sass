@@ -1,0 +1,232 @@
+.searchArrow
+    transform: rotate(90deg)
+    position: absolute
+    top: -120px
+    left: -60px
+    
+.search
+    background-image: url(https://www.egnyte.com/assets/2017/images/magnifying-glass.svg) 
+    background-repeat: no-repeat
+    background-size: 15px
+    background-position: 10px center
+    padding-left: 30px
+    &:focus
+        box-shadow: none
+
+.pagination
+    @media screen and (max-width: 425px)
+        width: 100%
+        display: flex
+        justify-content: space-between
+    @media screen and (min-width: 425px) and ( max-width: 768px)
+        width: 100%
+        display: flex
+        justify-content: center
+        .page-item
+            padding: 0 5px
+
+.transition
+    transition: all .3s ease
+.slide-left
+    // display: inline-block
+    // width: 100%
+    
+    transform: translateX(-30%)
+    opacity: 0.2
+.slide-right
+    opacity: 1 !important
+    
+    transform: translateX(-45%)
+.slide-right-default
+    // transition: all .3s ease
+    display: inline-block
+    text-align: right
+    width: 100%
+    opacity: 0
+    right: 0
+
+
+.sort-params-overlay
+    // position: fixed
+    // top: 0
+    // bottom: 0
+    // left: 0
+    // right: 0
+    // background: rgba(0, 150, 0 , .8)
+    .sort-params-list
+        width: 100%
+        z-index: 101
+        padding: 10px 0
+        border-bottom-left-radius: 5px
+        border-bottom-right-radius: 5px
+        box-shadow: 0 2px 4px rgba(0, 150, 0 , .7)
+
+.custom-btn-text
+    color: #444
+
+.custom-btn-text:hover
+    text-decoration: none
+
+
+.actions-wrapper
+    @media screen and (max-width: 481px)
+        padding: 9px 0
+        
+    @media screen and (max-width: 768px)
+        .dropdown-toggle
+            padding: 8px 16px
+.selected-contacts-pointer
+    @media screen and (max-width: 768px)
+        font-size: 1.3em !important   
+
+/* CUSTOM CHECKBOX */
+  
+.default-checkbox
+    position: absolute
+    opacity: 0
+
+.fixed-checkbox
+    position: absolute
+    bottom: 9px
+    right: 20px
+    transform: scale(2)
+    .custom-checkbox-mark
+        border: 1px solid #777777
+        border-radius: 2px
+
+    &__all
+        bottom: 20px
+
+.custom-checkbox
+    display: inline-block
+    width: 16px
+    height: 16px
+    user-select: none
+    position: relative
+    cursor: pointer
+
+.custom-label
+    left: 25px
+    line-height: 1.3em
+
+
+
+.custom-checkbox-mark
+    border: 1.5px solid #777777
+    border-radius: 3px
+    position: absolute
+    width: 100%
+    height: 100%
+    transition: all .2s ease
+    cursor: pointer
+    white-space: nowrap
+
+.default-checkbox:checked ~ .custom-checkbox-mark
+    border-color: #0dad01
+    background-color: #0dad01
+    transition: all .2s ease
+
+.custom-checkbox-mark:after
+    content: ''
+    position: absolute
+    bottom: 5px
+    left: 0
+    right: 0
+    margin: 0 auto
+    width: 0px
+    height: 0px
+    border: 1.5px solid #fff
+    border-right-color: transparent
+    border-top-color: transparent
+    transform: rotate(-55deg)
+    transition: all .2s ease
+    opacity: 0
+
+.default-checkbox:checked ~ .custom-checkbox-mark:after
+    content: ''
+    opacity: 1
+    width: 9px
+    height: 6px
+    transition: all .2s ease
+
+/* end CUSTOM CHECKBOX */
+
+.lh-1
+    line-height: 1em
+
+.user-select-0
+    user-select: none
+
+.cursor
+    cursor: pointer
+
+.custom-no-contacts // the dummy placeholder for the empty contact list
+    position: relative
+    font-size: 3em
+    @media (max-width: 468px)
+        padding-top: 15px
+        font-size: 1.7em
+
+
+input[data-placeholder]::placeholder // for not CSV trying to upload
+    font-family: sans-serif
+    font-style: italic
+    font-size: 1.2em
+    font-weight: 400
+
+    color: rgba(255, 0, 0, .7)
+
+.not-available
+    position: relative
+    cursor: auto !important
+    &:after
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        display: block
+        width: 100%
+        height: 100%
+        background-color: rgba(255, 255, 255, .75)
+
+
+.invalid
+    display: inline-block
+    position: relative
+    color: red !important
+    &::after
+        content: '! Invalid character'
+        font-style: italic
+        // display: inline-block
+        position: absolute
+        z-index: 5
+        top: 7px
+        right: 25px
+
+.glyph-size
+    line-height: 17px !important
+    vertical-align: middle 
+    font-size: 10px
+
+.highlited // highlites arrow of the sort parameter
+    color: rgba(0, 150, 0, 1) !important
+
+.fixed-selected-contacts
+    position: fixed
+    z-index: 1006 
+    top: 70px
+    left: -30px
+    padding: 5px 20px 5px 50px
+    color:  #fff
+    background-color: #18a0b7
+    box-shadow: 0 4px 6px rgba(0, 0, 0 , .5)
+    border-radius: 20px
+    animation: slide-selected .25s ease forwards
+    span
+        display: block !important
+
+@keyframes slide-selected
+    0%
+        margin-left: -150px
+    100%
+        margin-left: 0
